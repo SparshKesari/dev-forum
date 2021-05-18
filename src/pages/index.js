@@ -1,2 +1,7 @@
+import { useAuthState } from "../context/auth";
 
-export default () =><h1 className="text-3xl text-yellow-300">Hello</h1>;
+export default function IndexPage(){
+    const {isAuthenticated} = useAuthState();
+    return(
+    <> {isAuthenticated ?"Hello User":"Hello Guest"}</>)
+}
