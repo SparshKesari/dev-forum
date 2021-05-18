@@ -1,0 +1,31 @@
+{
+  "name": "Forum-Bulletin-Board",
+  "version": "1.0.0",
+  "description": "Bulletin Board webapp powered by Next.js and GraphQL.",
+  "main": "index.js",
+  "scripts": {
+    "dev":"next",
+    "start":"next start",
+    "build":"next build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SparshKesari/Forum-Bulletin-Board.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SparshKesari/Forum-Bulletin-Board/issues"
+  },
+  "homepage": "https://github.com/SparshKesari/Forum-Bulletin-Board#readme",
+  "dependencies": {
+    "next": "10.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "postcss-preset-env": "6.7.0",
+    "tailwindcss": "2.1.2"
+  }
+}
