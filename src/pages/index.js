@@ -2,7 +2,7 @@ import { useAuthState ,useAuthDispatch} from "../context/auth";
 
 export default function IndexPage(){
     const {isAuthenticated,user} = useAuthState();
-    const {login,createUser,logout}= useAuthDispatch()
+    const {login,register,createUser,logout}= useAuthDispatch()
 
     return(
     <> 
@@ -11,13 +11,25 @@ export default function IndexPage(){
     <p>Hello {user.name}</p>
     <button onClick={logout}>logout</button>
     </>
-    ):(<button onClick={()=>
+    ):(
+        <>
+    <button onClick={()=>
         login({
-            email:"j@j.com",
+            email:"j@dfj.com",
             password:"abc123"
         })}>
             Login
-    </button>)}
+    </button>
+    <button onClick={()=>
+        register({
+            name:"sparsh",
+           email:"j@dfj.com",
+            password:"abc123"
+        })}>
+               Register
+    </button>
+    </>
+    )}
     
     </>)
 }

@@ -12,61 +12,70 @@ const initialState={
     token:null,
 }
 
-function reducer(state,{payload,type}){
-    switch(type){
-        case LOGIN_SUCCESS:
-            return{
-                ...state,
-                ...payload,
-                isAuthenticated:true
-            };
-        case LOGOUT:
-            return initialState;
-        default:
-            throw new Error(`Unhandled action type ${type}`)
-    }
+function reducer(state, { payload, type }) {
+  switch (type) {
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        ...payload,
+        isAuthenticated: true,
+      };
+    // case UPDATE_USER:
+    //   return {
+    //     ...state,
+    //     user: {
+    //       ...state.user,
+    //       ...payload,
+    //     },
+    //   };
+    case LOGOUT:
+      return initialState;
+    default:
+      throw new Error(`Unhandled action type ${type}`);
+  }
 }
 
 function AuthProvider({children}){
     const[state,dispatch]=useReducer(reducer,initialState)
 
-    const login = async({email,password})=>{
-        const res  = await fetch('/api/login',{
-            method: 'POST',
-            body : JSON.stringify({email,password}),
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        })
+    const login = async ({ email, password, save_last_seen }) => {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-        const json = await res.json();
+    const json = await res.json();
 
-        if(!res.ok) throw new Error(json?.message);
+    if (!res.ok) throw new Error(json?.message);
 
-        const{token,...user} =json
+    const { token, ...user } = json;
 
-
-        dispatch({type:LOGIN_SUCCESS, payload:{token,user}})
-    }
-
-    const register = async({name,email,password})=>{
-         const res  = await fetch('/api/register',{
-            method: 'POST',
-            body : JSON.stringify({email,password}),
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        const json = await res.json();
-
-        if(!res.ok) throw new Error(json?.message);
-
-        const{token,...user} =json;
+    dispatch({ type: LOGIN_SUCCESS, payload: { token, user, save_last_seen } });
+  };
 
 
-        dispatch({type:LOGIN_SUCCESS, payload:{token,user}})
-    }
+    const register = async ({ name, email, password, save_last_seen }) => {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const json = await res.json();
+
+    if (!res.ok) throw new Error(json?.message);
+
+    const { token, ...user } = json;
+
+    dispatch({ type: LOGIN_SUCCESS, payload: { token, user, save_last_seen } });
+  };
+
+
     const logout=()=>dispatch({type:LOGOUT})
 
     return(
@@ -85,12 +94,13 @@ function useAuthDispatch() {
 
   if (context === undefined)
     throw new Error("useAuthDispatch must be used within an AuthProvider");
-  return context;
 
+  return context;
 }
 
 function useAuthState() {
   const context = useContext(AuthStateContext);
+
   if (context === undefined)
     throw new Error("useAuthState must be used within an AuthProvider");
 

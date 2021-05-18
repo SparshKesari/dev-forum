@@ -1,8 +1,7 @@
-import jwt from "jsonwebtoken"
-import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
-import {hasuraAdminClient,gql} from "../lib/hasura-admin-client.js"
-
+import { hasuraAdminClient, gql } from "../../lib/hasura-admin-client";
 
 const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
@@ -12,42 +11,35 @@ const GetUserByEmail = gql`
   }
 `;
 
-const InsertUser=gql`mutation InsertUser($name: String!, $email: String!, $password: String!) {
-  insert_users_one(object: {name: $name, email: $email, password: $password}) {
-    id
-    name
-    email
+const InsertUser = gql`
+  mutation InsertUser($name: String!, $email: String!, $password: String!) {
+    insert_users_one(
+      object: { name: $name, email: $email, password: $password }
+    ) {
+      id
+      name
+      email
+      last_seen
+    }
   }
-}
 `;
 
-export default async(req,res)=>{
-    const{name,email,password:rawPassword}=req.body
+export default async (req, res) => {
+  const { name, email, password: rawPassword } = req.body;
 
-//1.Lookup user form hasura by email if already exist
-const user = {user};
+  const {
+    users: [foundUser],
+  } = await hasuraAdminClient.request(GetUserByEmail, {
+    email,
+  });
 
-const {users:[foundUser]
-} = await hasuraAdminClient(GetUserByEmail,{
-    email
-});
+  if (foundUser)
+    return res.status(400).json({
+      message: "Unable to create account with the email provided. Try another.",
+    });
 
-
-
-//2.if found return error
-
-if(foundUser) return res.status(400).json({
-    message:"unable to create the account with this email provided try another"
-})
-
-//3. hash the pwd
-
-const salt= await bcrypt.genSalt();
-const password = await bcrypt.hash(rawPassword,salt);
-
-
-
-//4. create user on hasura
+  const salt = await bcrypt.genSalt();
+  const password = await bcrypt.hash(rawPassword, salt);
 
   const { insert_users_one } = await hasuraAdminClient.request(InsertUser, {
     name,
@@ -55,7 +47,6 @@ const password = await bcrypt.hash(rawPassword,salt);
     password,
   });
 
-  //5. add jwt
   const token = jwt.sign(
     {
       "https://hasura.io/jwt/claims": {
@@ -70,7 +61,6 @@ const password = await bcrypt.hash(rawPassword,salt);
     }
   );
 
-
-
   res.status(201).json({ token, ...insert_users_one });
+
 };
