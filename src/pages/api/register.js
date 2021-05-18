@@ -8,10 +8,6 @@ const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
     users(where: { email: { _eq: $email } }) {
       id
-      name
-      email
-      password
-      last_seen
     }
   }
 `;
@@ -46,29 +42,35 @@ if(foundUser) return res.status(400).json({
 
 //3. hash the pwd
 
-
+const salt= await bcrypt.genSalt();
+const password = await bcrypt.hash(rawPassword,salt);
 
 
 
 //4. create user on hasura
-const token = 'abc';
+
+  const { insert_users_one } = await hasuraAdminClient.request(InsertUser, {
+    name,
+    email,
+    password,
+  });
+
+  //5. add jwt
+  const token = jwt.sign(
+    {
+      "https://hasura.io/jwt/claims": {
+        "x-hasura-allowed-roles": ["guest", "user"],
+        "x-hasura-default-role": "user",
+        "x-hasura-user-id": insert_users_one.id,
+      },
+    },
+    process.env.HASURA_GRAPHQL_JWT_SECRET,
+    {
+      subject: insert_users_one.id,
+    }
+  );
 
 
-//5.create a token
 
-
-
-//6. return the jwt as token and user
-
-res.status(200).json({token,...user})
-
-}
-
-
-// "https://hasura.io/jwt/claims": {
-//     "x-hasura-allowed-roles": ["editor","user", "mod"],
-//     "x-hasura-default-role": "user",
-//     "x-hasura-user-id": "1234567890",
-//     "x-hasura-org-id": "123",
-//     "x-hasura-custom": "custom-value"
-//   }
+  res.status(201).json({ token, ...insert_users_one });
+};
