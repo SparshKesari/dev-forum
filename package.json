@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/SparshKesari/Forum-Bulletin-Board#readme",
   "dependencies": {
+    "bcryptjs": "2.4.3",
+    "graph": "0.2.0",
+    "graphql-request": "3.4.0",
+    "jsonwebtoken": "8.5.1",
     "next": "10.2.0",
     "next-google-fonts": "2.2.0",
     "react": "17.0.2",
