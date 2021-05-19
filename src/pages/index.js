@@ -15,15 +15,15 @@ export default function IndexPage(){
         <>
     <button onClick={()=>
         login({
-            email:"j@dfj.com",
+            email:"j@dfj.com2",
             password:"abc123"
         })}>
             Login
     </button>
     <button onClick={()=>
         register({
-            name:"sparsh",
-           email:"j@dfj.com",
+            name:"yoyoyoyoyoh",
+           email:"j@dfj.com2",
             password:"abc123"
         })}>
                Register
