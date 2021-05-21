@@ -68,7 +68,7 @@ export default function Layout({ children }) {
               </Link>
               <Link href='/unanswered'>
                 <a className='text-gray-600 hover:text-primary-500'>
-                  Uanswered
+                  Unanswered
                 </a>
               </Link>
             </div>
@@ -80,9 +80,9 @@ export default function Layout({ children }) {
 
       <footer className='max-w-4xl mx-auto p-6'>
         <div className='border-t pt-6 text-center text-sm text-gray-600'>
-          &copy; JamstackBB &mdash; 0.1.0 &mdash; Built by{' '}
-          <a href='https://notrab.dev' target='_blank'>
-            @notrab
+          &copy; Forum &mdash; 0.1.0 &mdash; Built by{' '}
+          <a href='https://github.com/SparshKesari' target='_blank'>
+            @sparshkesari
           </a>
         </div>
       </footer>
