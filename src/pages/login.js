@@ -20,6 +20,7 @@ export default function RegisterPage() {
   const { login } = useAuthDispatch()
   const {
     handleSubmit,
+    register,
     formState: { isSubmitting, errors },
     setError,
   } = useForm()
@@ -38,7 +39,7 @@ export default function RegisterPage() {
 
   const onSubmit = async ({ email, password }) => {
     try {
-      await createUser({ email, password })
+      await login({ email, password })
       router.push('/')
     } catch ({ message }) {
       setError('email', {
@@ -57,7 +58,7 @@ export default function RegisterPage() {
           <div>
             <input
               type='email'
-              {...login('email', {
+              {...register('email', {
                 required: 'You must provide a email.',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -72,7 +73,7 @@ export default function RegisterPage() {
             <input
               type='password'
               id='password'
-              {...login('password', {
+              {...register('password', {
                 required: 'You must provide a password.',
               })}
               placeholder='Enter your password'
