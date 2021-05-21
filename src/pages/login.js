@@ -20,7 +20,6 @@ export default function RegisterPage() {
   const { login } = useAuthDispatch()
   const {
     handleSubmit,
-    register,
     formState: { isSubmitting, errors },
     setError,
   } = useForm()
@@ -37,9 +36,9 @@ export default function RegisterPage() {
 
   if (isAuthenticated) return null
 
-  const onSubmit = async ({ name, email, password, save_last_seen }) => {
+  const onSubmit = async ({ email, password }) => {
     try {
-      await createUser({ name, email, password, save_last_seen })
+      await createUser({ email, password })
       router.push('/')
     } catch ({ message }) {
       setError('email', {
@@ -52,23 +51,13 @@ export default function RegisterPage() {
   return (
     <>
       <Layout>
-        <h1 className='text-3xl'>Create an account</h1>
+        <h1 className='text-3xl'>login</h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
-              type='text'
-              {...register('name', {
-                required: 'You must provide a name.',
-              })}
-              placeholder='Your name'
-            />
-            {errors.name && <span>{errors.name.message}</span>}
-          </div>
-          <div>
-            <input
               type='email'
-              {...register('email', {
+              {...login('email', {
                 required: 'You must provide a email.',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -83,18 +72,14 @@ export default function RegisterPage() {
             <input
               type='password'
               id='password'
-              {...register('password', {
+              {...login('password', {
                 required: 'You must provide a password.',
-                minLength: {
-                  message: 'Your password must be at least 6 characters',
-                  value: 6,
-                },
               })}
-              placeholder='Choose a password'
+              placeholder='Enter your password'
             />
             {errors.password && <span>{errors.password.message}</span>}
           </div>
-          <div>
+          {/* <div>
             <label htmlFor='save_last_seen'>
               <input
                 type='checkbox'
@@ -103,10 +88,10 @@ export default function RegisterPage() {
               />
               Show as online to other users
             </label>
-          </div>
+          </div> */}
           <div>
             <button type='submit' disabled={isSubmitting}>
-              Create account
+              Login
             </button>
           </div>
         </form>

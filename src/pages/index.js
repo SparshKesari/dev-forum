@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import { useAuthState, useAuthDispatch } from '../context/auth'
 
 export default function IndexPage() {
   const { isAuthenticated, user } = useAuthState()
-  const { login, register, createUser, logout } = useAuthDispatch()
+  const { logout } = useAuthDispatch()
 
   return (
     <>
@@ -13,27 +14,8 @@ export default function IndexPage() {
         </>
       ) : (
         <>
-          <button
-            onClick={() =>
-              login({
-                email: 'j@dfj.com2',
-                password: 'abc123',
-              })
-            }
-          >
-            Login
-          </button>
-          <button
-            onClick={() =>
-              register({
-                name: 'yoyoyoyoyoh',
-                email: 'j@dfj.com2',
-                password: 'abc123',
-              })
-            }
-          >
-            Register
-          </button>
+          <Link href='/login'>Login</Link>
+          <Link href='/register'>Register</Link>
         </>
       )}
     </>
