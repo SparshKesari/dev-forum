@@ -1,5 +1,6 @@
 # Build output
 .next
+.next/*/**
 
 # Environment variables
 !.env
