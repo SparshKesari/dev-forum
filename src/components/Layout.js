@@ -51,6 +51,12 @@ export default function Layout({ children }) {
                       Register
                     </a>
                   </Link>
+                  <a
+                    className='text-gray-600 hover:text-primary-500'
+                    href='/ask'
+                  >
+                    ask a page
+                  </a>
                 </>
               )}
             </div>
