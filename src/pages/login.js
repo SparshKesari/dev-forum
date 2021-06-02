@@ -4,7 +4,7 @@
 
 //3. return error
 
-//4. if sucessful redirect to root
+//4. if successful redirect to root
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'

@@ -40,10 +40,9 @@ function reducer(state, { payload, type }) {
 }
 
 function AuthProvider({ children }) {
-  const [savedAuthState, saveAuthState] = usePersistedAuthState(
-    JSON.stringify(initialState)
-  )
-  const [state, dispatch] = useReducer(reducer, JSON.parse(savedAuthState))
+  const [savedAuthState, saveAuthState] = usePersistedAuthState(initialState)
+
+  const [state, dispatch] = useReducer(reducer, savedAuthState)
 
   useEffect(() => {
     saveAuthState(state)

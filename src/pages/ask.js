@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 import { useForm } from 'react-hook-form'
 import { hasuraAdminClient } from '../lib/hasura-admin-client'
-import { hasuraUserClient, gql } from '../src/lib/hasura-user-client'
+import { hasuraUserClient, gql } from '../lib/hasura-user-client'
 
 const GetCategories = gql`
   {
@@ -57,13 +57,21 @@ export default function AskPage({ categories }) {
   } = useForm()
 
   const onSubmit = async ({ categoryId, postTitle, postMessage }) => {
+    console.log('posting')
+    const [hasuraClient] = hasuraUserClient()
     try {
+      const { insert_threads_one } = await hasuraClient.request(InsertThread, {
+        categoryId,
+        postTitle,
+        postMessage,
+      })
       console.log({ categoryId, postTitle, postMessage })
+      console.log(insert_threads_one)
+      router.push(`/thread/${insert_threads_one.id}`)
     } catch (err) {
       console.log(err)
     }
   }
-
   return (
     <Layout>
       <h1 className='text-3xl'>Ask a Question:</h1>
